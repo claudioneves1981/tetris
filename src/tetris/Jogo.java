@@ -115,25 +115,15 @@ public class Jogo extends JPanel {
 
         String[] palavrasmenu = {"INICIO", "PAUSE/PLAY", "SAIR"};
         for (int i = 0; i < 3; i++) {
+            g.setColor(Color.red);
             g.fillRect(448, 60 + 35 * i, 150, 30);
-        }
-        for (int i = 0; i < 3; i++) {
-            if (i == 1 && !isAtive) {
-                g.setColor(Color.yellow);
-                g.fillRect(448, 60 + 35 * i, 150, 30);
-            } else if (i != 1) {
-                g.setColor(Color.red);
-                g.fillRect(448, 60 + 35 * i, 150, 30);
-            }
-
             g.setColor(Color.red);
             g.drawString("REI:" + REI, 600, 20);
-        }
-
-        for (int i = 0; i < 3; i++) {
             g.setColor(Color.GREEN);
             g.drawString(palavrasmenu[i], 448 + 40, 80 + 30 * i);
         }
+
+
         g.setColor(Color.red);
         g.drawRect(449, 233, 150, 150);
     }
@@ -143,7 +133,7 @@ public class Jogo extends JPanel {
         for (int i = 0; i < limiteParede; i++) {
             for (int j = 0; j < 32; j++) {
 
-                if (i == 0 || j == 31) {
+                if (i == 0 || j == 31 || j == 0) {
                     parede[i][j] = Color.orange;
                 } else {
                     parede[i][j] = Color.PINK;
@@ -160,7 +150,6 @@ public class Jogo extends JPanel {
                 return false;
             }
         }
-//// System.out.println("false");
         return true;
 
     }
