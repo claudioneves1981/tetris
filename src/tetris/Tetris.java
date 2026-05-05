@@ -54,7 +54,7 @@ public class Tetris extends JPanel{
                     case KeyEvent.VK_SPACE:
                         try {
                             jog.baixar();
-                        } catch (InterruptedException ex) {
+                        } catch (Throwable ex) {
                             throw new RuntimeException(ex);
                         }
                         break;

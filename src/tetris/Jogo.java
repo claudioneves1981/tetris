@@ -22,6 +22,7 @@ public class Jogo extends JPanel {
     int nivel = 0;
     String REI;
     int contRei = 1;
+    int pontos = 0;
 
     //==========
 
@@ -93,12 +94,14 @@ public class Jogo extends JPanel {
     }
 
     public void desenhar(Graphics g) {
+
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < 32; j++) {
                 g.setColor(parede[i][j]);
                 g.fillRect(21 * i, 21 * j, 20, 20);
             }
         }
+
 
 
 // tetraminoPecas
@@ -118,7 +121,7 @@ public class Jogo extends JPanel {
             g.setColor(Color.red);
             g.fillRect(448, 60 + 35 * i, 150, 30);
             g.setColor(Color.red);
-            g.drawString("REI:" + REI, 600, 20);
+            g.drawString("REI:" + pontos, 600, 20);
             g.setColor(Color.GREEN);
             g.drawString(palavrasmenu[i], 448 + 40, 80 + 30 * i);
         }
@@ -160,6 +163,14 @@ public class Jogo extends JPanel {
             while (true) {
                 try {
                     baixar();
+                    if(origemPeca.y == 0) {
+                        if (JOptionPane.showConfirmDialog(null, "Fim de Jogo. Recomeçar") == JOptionPane.YES_OPTION) {
+                            new Tetris();
+                            break;
+                        } else{
+                            System.exit(0);
+                        }
+                    }
                     if (cont == 0) {
                         nivel = 1;
                         sleep(1000);
@@ -190,6 +201,8 @@ public class Jogo extends JPanel {
 
                 } catch (Exception e) {
                     e.getMessage();
+                } catch (Throwable e) {
+                    throw new RuntimeException(e);
                 }
             }
         }).start();
@@ -211,14 +224,18 @@ public class Jogo extends JPanel {
 //=============================================
 
     //== Movimentos Das Pe�as direita esquerda e baixo assim como as colisoes com a parede==
-    void baixar() throws InterruptedException {
+    void baixar() throws Throwable {
+
         if (colisao(origemPeca.x, origemPeca.y+1, rotacao)) {
             origemPeca.y += variavel;
+
         }else{
+
             montar();
         }
 
         repaint();
+
     }
 
     void direita() {
@@ -261,6 +278,7 @@ public class Jogo extends JPanel {
             parede[origemPeca.x + p.x][origemPeca.y + p.y] = tetraminoCor[pecaAtual];
         }
         limparLinha();
+        pontos+=100;
         novaPeca();
     }
 
@@ -288,7 +306,7 @@ public class Jogo extends JPanel {
                 j += 1;
                 numero += 1;
                 cont++;
-                pontos();
+                pontos+=500;
             }
         }
     }
