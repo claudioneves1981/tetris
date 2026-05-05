@@ -150,6 +150,7 @@ public class Jogo extends JPanel {
                 return false;
             }
         }
+
         return true;
 
     }
@@ -211,14 +212,12 @@ public class Jogo extends JPanel {
 
     //== Movimentos Das Pe�as direita esquerda e baixo assim como as colisoes com a parede==
     void baixar() throws InterruptedException {
-        if (colisao(origemPeca.x, origemPeca.y + 1, rotacao)) {
+        if (colisao(origemPeca.x, origemPeca.y+1, rotacao)) {
             origemPeca.y += variavel;
-            if (isAtive) {
-                repaint();
-            }
-        } else {
+        }else{
             montar();
         }
+
         repaint();
     }
 
