@@ -24,9 +24,7 @@ public class Tetris extends JPanel{
     public void construirJogo() throws InterruptedException{
 
         Tela tela=new Tela();
-
         Jogo jog=new Jogo();
-
         tela.addKeyListener(new KeyListener() {
 
             @Override
@@ -58,6 +56,9 @@ public class Tetris extends JPanel{
                         break;
                     case KeyEvent.VK_ENTER:
                         jog.pausePlay();
+                        break;
+                    case KeyEvent.VK_ESCAPE:
+                        System.exit(0);
                         break;
                 }
 

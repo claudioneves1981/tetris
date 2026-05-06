@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Random;
 
 import static java.lang.Thread.sleep;
+import static javax.swing.JOptionPane.*;
 
 public class Jogo extends JPanel {
     // variaveis
@@ -17,10 +18,8 @@ public class Jogo extends JPanel {
     int dim = 17;
     int limiteParede = dim - 1;
     boolean isAtive = true;
-    int numero;
     int N;
     int VGlobal = 0;
-    int cont = 0;
     int nivel = 0;
     String REI;
     int contRei = 1;
@@ -86,18 +85,17 @@ public class Jogo extends JPanel {
                     {new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2)}
             }
     };
-    JButton menuInicio = new JButton();
-    JButton menuPausePlay = new JButton();
-    JButton menuSair = new JButton();
-
 
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, 900, 700);
-        //String[] palavrasmenu = {"INICIO", "PAUSE/PLAY", "SAIR"};
-        //menuInicio.setBounds(448 + 40, 80 + 30,150,30);
-        //add(menuInicio);
+        String[] palavrasmenu = {"PAUSE/PLAY(Press Enter)", "EXIT(Press ESC)"};
+        for (int i = 0; i < 2; i++) {
+            g.setColor(Color.green);
+            g.drawString(palavrasmenu[i], 448 + 40, 80 + 30 * i);
+
+        }
         desenhar(g);
 
     }
@@ -113,7 +111,6 @@ public class Jogo extends JPanel {
         }
 
 
-
 // tetraminoPecas
         g.setColor(tetraminoCor[pecaAtual]); //Cor Do Teris
         for (Point p : tetraminoPeca[pecaAtual][rotacao]) {
@@ -125,15 +122,8 @@ public class Jogo extends JPanel {
         }
 
         g.setColor(Color.red);
-
-        g.setColor(Color.red);
-        g.drawString("REI:" + pontos, 600, 20);
-
-
-
-
-
-
+        g.drawString("SCORE:" + pontos, 600, 20);
+        g.drawString("Nivel:" + nivel, 600, 40);
 
 
         g.setColor(Color.red);
@@ -171,40 +161,55 @@ public class Jogo extends JPanel {
         new Thread(() -> {
             while (true) {
                 try {
+
                     baixar();
-                    if(origemPeca.y == 0) {
-                        if (JOptionPane.showConfirmDialog(null, "Fim de Jogo. Recomeçar") == JOptionPane.YES_OPTION) {
+                    if (origemPeca.y == 0) {
+
+                        var dialogResult = showConfirmDialog(
+                                null,
+                                "Deseja iniciar um novo jogo?",
+                                "Novo jogo",
+                                YES_NO_OPTION,
+                                QUESTION_MESSAGE
+                        );
+
+                        if (dialogResult == 0) {
                             new Tetris();
                             break;
-                        } else{
+                        } else {
                             System.exit(0);
                         }
+
+
                     }
-                    if (cont == 0) {
+
+
+                    if (pontos >= 0 && pontos < 5000) {
                         nivel = 1;
                         sleep(1000);
                     }
-                    if (cont >= 1 && cont < 3) {
-                        nivel = 1;
+                    if (pontos >= 5000 && pontos < 10000) {
+                        nivel = 2;
                         sleep(700);
                     }
-                    if (cont >= 3 && cont < 6) {
-                        nivel = 2;
+                    if (pontos >= 10000 && pontos < 15000) {
+                        nivel = 3;
                         sleep(500);
                     }
-                    if (cont >= 6 && cont < 9) {
-                        nivel = 3;
+                    if (pontos >= 15000 && pontos < 20000) {
+                        nivel = 4;
                         sleep(300);
                     }
-                    if (cont >= 9 && cont < 12) {
-                        nivel = 4;
+                    if (pontos >= 20000 && pontos < 25000) {
+                        nivel = 5;
                         sleep(200);
                     }
-                    if (cont >= 12 && cont < 15) {
-                        nivel = 5;
+                    if (pontos >= 25000 && pontos < 30000) {
+                        nivel = 6;
                         sleep(150);
                     }
-                    if (cont >= 15) {
+                    if (pontos >= 30000) {
+                        nivel = 7;
                         sleep(150);
                     }
 
@@ -235,13 +240,15 @@ public class Jogo extends JPanel {
     //== Movimentos Das Pe�as direita esquerda e baixo assim como as colisoes com a parede==
     void baixar() throws Throwable {
 
-        if (colisao(origemPeca.x, origemPeca.y+1, rotacao)) {
+
+        if (colisao(origemPeca.x, origemPeca.y + 1, rotacao)) {
             origemPeca.y += variavel;
 
-        }else{
 
+        } else {
             montar();
         }
+
 
         repaint();
 
@@ -256,7 +263,7 @@ public class Jogo extends JPanel {
 
     void esquerda() {
         if (colisao(origemPeca.x - 1, origemPeca.y, rotacao)) {
-            origemPeca.x -= variavel;
+            origemPeca.x--;
 
         }
         repaint();
@@ -265,6 +272,7 @@ public class Jogo extends JPanel {
     //====================================================================
     public void novaPeca() throws InterruptedException {
         origemPeca = new Point(dim / 2 - 1, 0);
+
 
         Random r = new Random();
         for (int i = 0; i < 2; i++) {
@@ -287,7 +295,7 @@ public class Jogo extends JPanel {
             parede[origemPeca.x + p.x][origemPeca.y + p.y] = tetraminoCor[pecaAtual];
         }
         limparLinha();
-        pontos+=100;
+        pontos += 100;
         novaPeca();
     }
 
@@ -299,9 +307,8 @@ public class Jogo extends JPanel {
         }
     }
 
-    public void limparLinha(){
+    public void limparLinha() {
         boolean isActive;
-        numero = 0;
         for (int j = 30; j > 0; j--) {
             isActive = false;
             for (int i = 0; i < dim; i++) {
@@ -313,9 +320,7 @@ public class Jogo extends JPanel {
             if (!isActive) {
                 destruir(j, N);
                 j += 1;
-                numero += 1;
-                cont++;
-                pontos+=500;
+                pontos += 500;
             }
         }
     }
@@ -327,41 +332,5 @@ public class Jogo extends JPanel {
         } else {
             variavel = 0;
         }
-    }
-
-
-    //public int contar(){
-
-    /// /return cont;
-//}
-
-//int ponto =Integer.parseInt(pontos.MostraPontos());
-    void pontos(){
-
-//if(cont>ponto){
-//pontos.EntrarDados(""+cont);
-        contRei++;
-        System.out.println("" + contRei);
-        Reinado();
-    }
-
-
-    void Reinado(){
-//if(cont>ponto&&contRei==2){
-//pausePlay() ;
-//REI=JOptionPane.showInputDialog("Digite o seu Nome Meu Rei");
-//pontos. MeuRei(REI) ;
-//if(REI!=null){
-//pausePlay() ;
-    }
-//}
-//}
-
-//public String getREI() {
-//return REI;
-//}
-
-    public void setREI(String REI) {
-//this.REI = REI;
     }
 }
