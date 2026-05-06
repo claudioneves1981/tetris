@@ -2,6 +2,8 @@ package tetris;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,16 +86,24 @@ public class Jogo extends JPanel {
                     {new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2)}
             }
     };
+    JButton menuInicio = new JButton();
+    JButton menuPausePlay = new JButton();
+    JButton menuSair = new JButton();
 
 
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, 900, 700);
+        //String[] palavrasmenu = {"INICIO", "PAUSE/PLAY", "SAIR"};
+        //menuInicio.setBounds(448 + 40, 80 + 30,150,30);
+        //add(menuInicio);
         desenhar(g);
+
     }
 
     public void desenhar(Graphics g) {
+
 
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < 32; j++) {
@@ -116,15 +126,14 @@ public class Jogo extends JPanel {
 
         g.setColor(Color.red);
 
-        String[] palavrasmenu = {"INICIO", "PAUSE/PLAY", "SAIR"};
-        for (int i = 0; i < 3; i++) {
-            g.setColor(Color.red);
-            g.fillRect(448, 60 + 35 * i, 150, 30);
-            g.setColor(Color.red);
-            g.drawString("REI:" + pontos, 600, 20);
-            g.setColor(Color.GREEN);
-            g.drawString(palavrasmenu[i], 448 + 40, 80 + 30 * i);
-        }
+        g.setColor(Color.red);
+        g.drawString("REI:" + pontos, 600, 20);
+
+
+
+
+
+
 
 
         g.setColor(Color.red);
@@ -320,7 +329,8 @@ public class Jogo extends JPanel {
         }
     }
 
-//public int contar(){
+
+    //public int contar(){
 
     /// /return cont;
 //}

@@ -12,8 +12,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Tetris extends JPanel{
     
@@ -25,16 +24,15 @@ public class Tetris extends JPanel{
     public void construirJogo() throws InterruptedException{
 
         Tela tela=new Tela();
+
         Jogo jog=new Jogo();
-        tela.add(jog);
-        jog.correr();
-        jog.Motor();
+
         tela.addKeyListener(new KeyListener() {
-        
+
             @Override
             public void keyTyped(KeyEvent e) {
 
-        }
+            }
 
             @Override
             public void keyPressed(KeyEvent e) {
@@ -60,7 +58,7 @@ public class Tetris extends JPanel{
                         break;
                     case KeyEvent.VK_ENTER:
                         jog.pausePlay();
-                     break;
+                        break;
                 }
 
             }
@@ -71,6 +69,10 @@ public class Tetris extends JPanel{
             }
 
         });
+        jog.correr();
+        jog.Motor();
+        tela.add(jog);
+
     }
 
     public static void main(String[] args) throws InterruptedException {
