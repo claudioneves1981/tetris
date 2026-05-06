@@ -24,6 +24,7 @@ public class Tetris extends JPanel{
     public void construirJogo() throws InterruptedException{
 
         Tela tela=new Tela();
+        tela.setTitle("Tetris");
         Jogo jog=new Jogo();
         tela.addKeyListener(new KeyListener() {
 
