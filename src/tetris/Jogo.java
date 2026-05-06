@@ -2,9 +2,6 @@ package tetris;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -13,7 +10,7 @@ import static java.lang.Thread.sleep;
 import static javax.swing.JOptionPane.*;
 
 public class Jogo extends JPanel {
-    // variaveis
+
     int variavel = 1;
     int dim = 17;
     int limiteParede = dim - 1;
@@ -21,26 +18,18 @@ public class Jogo extends JPanel {
     int N;
     int VGlobal = 0;
     int nivel = 0;
-    String REI;
-    int contRei = 1;
     int pontos = 0;
-
-    //==========
-
-
-    //=======Variaves========
-    int y, x, rotacao = 0;//nivel 1
-    public Point origemPeca;
-    public Color[][] parede;//nivel 2
-    public ArrayList<Integer> proximaPeca = new ArrayList<>();//nivel 3
-    public int pecaAtual;
-    public Color[] tetraminoCor = {
+    int y, x, rotacao = 0;
+    Point origemPeca;
+    Color[][] parede;
+    ArrayList<Integer> proximaPeca = new ArrayList<>();
+    int pecaAtual;
+    Color[] tetraminoCor = {
             new Color(0, 0, 153), new Color(204, 0, 204), new Color(0, 102, 102), new Color(255, 102, 0), Color.green, Color.cyan, Color.red
     };
-//======================
 
-    Point[][][] tetraminoPeca = {// 0
-// I-Piece
+
+    Point[][][] tetraminoPeca = {
             {
                     {new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1)},
                     {new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(1, 3)},
@@ -110,8 +99,12 @@ public class Jogo extends JPanel {
             }
         }
 
+        tetraminoPecas(g);
 
-// tetraminoPecas
+    }
+
+    public void tetraminoPecas(Graphics g){
+
         g.setColor(tetraminoCor[pecaAtual]); //Cor Do Teris
         for (Point p : tetraminoPeca[pecaAtual][rotacao]) {
             g.fillRect((p.x + origemPeca.x) * 21 + x, (p.y + origemPeca.y) * 21 + y, 20, 20);
@@ -130,7 +123,7 @@ public class Jogo extends JPanel {
         g.drawRect(449, 233, 150, 150);
     }
 
-    public void Motor() throws InterruptedException {
+    public void motor() throws InterruptedException {
         parede = new Color[20][32];
         for (int i = 0; i < limiteParede; i++) {
             for (int j = 0; j < 32; j++) {

@@ -1,22 +1,11 @@
 package tetris;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
-import static java.lang.Thread.sleep;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 public class Tetris extends JPanel{
-    
-//Construtor
+
     public Tetris() throws InterruptedException {
         construirJogo() ;
     }
@@ -72,7 +61,7 @@ public class Tetris extends JPanel{
 
         });
         jog.correr();
-        jog.Motor();
+        jog.motor();
         tela.add(jog);
 
     }
