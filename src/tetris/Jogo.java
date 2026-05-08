@@ -9,16 +9,17 @@ import java.util.Random;
 import static java.lang.Thread.sleep;
 import static javax.swing.JOptionPane.*;
 
-public class Jogo extends JPanel {
+public class Jogo extends JComponent {
 
     int variavel = 1;
     int dim = 17;
     int limiteParede = dim - 1;
     boolean isAtive = true;
     int N;
-    int VGlobal = 0;
+    int VGlobal;
     int nivel = 0;
     int pontos = 0;
+    int cont;
     int y, x, rotacao = 0;
     Point origemPeca;
     Color[][] parede;
@@ -27,6 +28,7 @@ public class Jogo extends JPanel {
     Color[] tetraminoCor = {
             new Color(0, 0, 153), new Color(204, 0, 204), new Color(0, 102, 102), new Color(255, 102, 0), Color.green, Color.cyan, Color.red
     };
+    JFrame frame = new JFrame();
 
 
     Point[][][] tetraminoPeca = {
@@ -74,6 +76,14 @@ public class Jogo extends JPanel {
                     {new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2)}
             }
     };
+
+
+
+    public Jogo(){
+
+    }
+
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -136,12 +146,31 @@ public class Jogo extends JPanel {
 
             }
         }
+        //cont = 1;
         novaPeca();
     }
 
-    public boolean colisao(int x, int y, int rotacao) {
+    public boolean colisao(int x, int y, int rotacao) throws Throwable {
         for (Point p : tetraminoPeca[pecaAtual][rotacao]) {
             if (parede[p.x + x][p.y + y] != Color.PINK) {
+                //System.out.println(p.y+y);
+                if(p.y+y<=3) {
+                    var dialogResult = showConfirmDialog(
+                            null,
+                            "Deseja iniciar um novo jogo?",
+                            "Novo jogo",
+                            YES_NO_OPTION,
+                            QUESTION_MESSAGE
+                    );
+
+                    if (dialogResult == 0) {
+                        Jogo.this.repaint();
+                    } else {
+                        System.exit(0);
+                    }
+                    //return false;
+                }
+
                 return false;
             }
         }
@@ -150,33 +179,13 @@ public class Jogo extends JPanel {
 
     }
 
-    public void correr() {
+    public void correr() throws InterruptedException {
+
         new Thread(() -> {
+
             while (true) {
                 try {
-
                     baixar();
-                    if (origemPeca.y == 0) {
-
-                        var dialogResult = showConfirmDialog(
-                                null,
-                                "Deseja iniciar um novo jogo?",
-                                "Novo jogo",
-                                YES_NO_OPTION,
-                                QUESTION_MESSAGE
-                        );
-
-                        if (dialogResult == 0) {
-                            new Tetris();
-                            break;
-                        } else {
-                            System.exit(0);
-                        }
-
-
-                    }
-
-
                     if (pontos >= 0 && pontos < 5000) {
                         nivel = 1;
                         sleep(1000);
@@ -211,12 +220,23 @@ public class Jogo extends JPanel {
                 } catch (Throwable e) {
                     throw new RuntimeException(e);
                 }
+
             }
+
+
+
+
+
         }).start();
+
+
+
+
+
     }
 
     //=============Rota��o das Pe�as=================
-    public void rotacao(int v) {
+    public void rotacao(int v) throws Throwable {
         if (isAtive) {
             int novaRotacao = (rotacao + v) % 4;
             if (novaRotacao < 0) {
@@ -239,22 +259,31 @@ public class Jogo extends JPanel {
 
 
         } else {
+
+
+
+
             montar();
         }
 
 
+
+
+
+
         repaint();
+
 
     }
 
-    void direita() {
+    void direita() throws Throwable {
         if (colisao(origemPeca.x + 1, origemPeca.y, rotacao)) {
             origemPeca.x += variavel;
         }
         repaint();
     }
 
-    void esquerda() {
+    void esquerda() throws Throwable {
         if (colisao(origemPeca.x - 1, origemPeca.y, rotacao)) {
             origemPeca.x--;
 
@@ -264,20 +293,20 @@ public class Jogo extends JPanel {
 
     //====================================================================
     public void novaPeca() throws InterruptedException {
-        origemPeca = new Point(dim / 2 - 1, 0);
+        origemPeca = new Point(dim / 2 - 1, 1);
+
 
 
         Random r = new Random();
-        for (int i = 0; i < 2; i++) {
-            VGlobal = r.nextInt(7);
-        }
+        VGlobal = r.nextInt(7);
+
 
 
         if (proximaPeca.isEmpty()) {
             Collections.addAll(proximaPeca, VGlobal);//Escolhas
             Collections.shuffle(proximaPeca);// responsavel pela Aleatoriedade
         }
-        sleep(1);
+        //sleep(1);
         pecaAtual = proximaPeca.get(0);
         proximaPeca.remove(0);//Remove a peca atual
 

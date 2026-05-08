@@ -10,4 +10,5 @@ public class Tela extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
+
 }
