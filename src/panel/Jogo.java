@@ -152,15 +152,16 @@ public class Jogo extends JPanel {
 
     public boolean colisao(int x, int y, int rotacao) throws Throwable {
         for (Point p : tetraminoPeca[pecaAtual][rotacao]) {
-            System.out.println(p.y+y);
+
             if (parede[p.x + x][p.y + y] != Color.PINK) {
 
-
-                if((p.y+y)==31) {
-
+                System.out.println((p.x+x)+" "+(p.y+y));
+                if(p.y + y <= 3) {
+                    p = new Point();
                    Tetris tetris = new Tetris();
                    tetris.novoJogo();
-               }
+
+                }
 
                 return false;
 
