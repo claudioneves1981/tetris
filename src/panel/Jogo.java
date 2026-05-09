@@ -1,4 +1,6 @@
-package tetris;
+package panel;
+
+import screen.Tetris;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,9 +9,8 @@ import java.util.Collections;
 import java.util.Random;
 
 import static java.lang.Thread.sleep;
-import static javax.swing.JOptionPane.*;
 
-public class Jogo extends JComponent {
+public class Jogo extends JPanel {
 
     int variavel = 1;
     int dim = 17;
@@ -19,16 +20,15 @@ public class Jogo extends JComponent {
     int VGlobal;
     int nivel = 0;
     int pontos = 0;
-    int cont;
     int y, x, rotacao = 0;
-    Point origemPeca;
-    Color[][] parede;
+    Point origemPeca = new Point();
+    Color[][] parede =  new Color[20][32];
     ArrayList<Integer> proximaPeca = new ArrayList<>();
     int pecaAtual;
     Color[] tetraminoCor = {
             new Color(0, 0, 153), new Color(204, 0, 204), new Color(0, 102, 102), new Color(255, 102, 0), Color.green, Color.cyan, Color.red
     };
-    JFrame frame = new JFrame();
+
 
 
     Point[][][] tetraminoPeca = {
@@ -79,8 +79,9 @@ public class Jogo extends JComponent {
 
 
 
-    public Jogo(){
-
+    public Jogo(Dimension dimension){
+        this.setSize(dimension);
+        this.setPreferredSize(dimension);
     }
 
 
@@ -134,7 +135,6 @@ public class Jogo extends JComponent {
     }
 
     public void motor() throws InterruptedException {
-        parede = new Color[20][32];
         for (int i = 0; i < limiteParede; i++) {
             for (int j = 0; j < 32; j++) {
 
@@ -152,37 +152,34 @@ public class Jogo extends JComponent {
 
     public boolean colisao(int x, int y, int rotacao) throws Throwable {
         for (Point p : tetraminoPeca[pecaAtual][rotacao]) {
+            System.out.println(p.y+y);
             if (parede[p.x + x][p.y + y] != Color.PINK) {
-                //System.out.println(p.y+y);
-                if(p.y+y<=3) {
-                    var dialogResult = showConfirmDialog(
-                            null,
-                            "Deseja iniciar um novo jogo?",
-                            "Novo jogo",
-                            YES_NO_OPTION,
-                            QUESTION_MESSAGE
-                    );
 
-                    if (dialogResult == 0) {
-                        Jogo.this.repaint();
-                    } else {
-                        System.exit(0);
-                    }
-                    //return false;
-                }
+
+                if((p.y+y)==31) {
+
+                   Tetris tetris = new Tetris();
+                   tetris.novoJogo();
+               }
 
                 return false;
+
+
             }
+
         }
+
+
 
         return true;
 
     }
 
+
+
     public void correr() throws InterruptedException {
 
         new Thread(() -> {
-
             while (true) {
                 try {
                     baixar();
@@ -223,10 +220,6 @@ public class Jogo extends JComponent {
 
             }
 
-
-
-
-
         }).start();
 
 
@@ -251,7 +244,7 @@ public class Jogo extends JComponent {
 //=============================================
 
     //== Movimentos Das Pe�as direita esquerda e baixo assim como as colisoes com a parede==
-    void baixar() throws Throwable {
+    public void baixar() throws Throwable {
 
 
         if (colisao(origemPeca.x, origemPeca.y + 1, rotacao)) {
@@ -276,14 +269,14 @@ public class Jogo extends JComponent {
 
     }
 
-    void direita() throws Throwable {
+    public void direita() throws Throwable {
         if (colisao(origemPeca.x + 1, origemPeca.y, rotacao)) {
             origemPeca.x += variavel;
         }
         repaint();
     }
 
-    void esquerda() throws Throwable {
+    public void esquerda() throws Throwable {
         if (colisao(origemPeca.x - 1, origemPeca.y, rotacao)) {
             origemPeca.x--;
 
@@ -347,7 +340,7 @@ public class Jogo extends JComponent {
         }
     }
 
-    void pausePlay() {
+    public void pausePlay() {
         isAtive = !isAtive;
         if (isAtive) {
             variavel = 1;
