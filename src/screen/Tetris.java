@@ -32,7 +32,12 @@ public class Tetris {
 
 
         if (dialogResult == 0) {
-                startNewGame();
+
+
+            mainFrame.removeAll();
+            mainFrame.dispose();
+            startNewGame();
+
         } else {
             System.exit(0);
         }
@@ -45,7 +50,6 @@ public class Tetris {
 
         //JPanel mainPanel = new Jogo(dimension);
         Jogo jogo = new Jogo(dimension);
-        mainFrame = new JFrame();
         mainFrame.revalidate();
         mainFrame.repaint();
         mainFrame.addKeyListener(new KeyListener() {
