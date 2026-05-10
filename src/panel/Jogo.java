@@ -28,9 +28,6 @@ public class Jogo extends JPanel {
     Color[] tetraminoCor = {
             new Color(0, 0, 153), new Color(204, 0, 204), new Color(0, 102, 102), new Color(255, 102, 0), Color.green, Color.cyan, Color.red
     };
-
-
-
     Point[][][] tetraminoPeca = {
             {
                     {new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1)},
@@ -138,8 +135,11 @@ public class Jogo extends JPanel {
         for (int i = 0; i < limiteParede; i++) {
             for (int j = 0; j < 32; j++) {
 
-                if (i == 0 || j == 31 || j == 0) {
+                if (i == 0 || j == 31) {
                     parede[i][j] = Color.orange;
+
+
+
                 } else {
                     parede[i][j] = Color.PINK;
                 }
@@ -151,26 +151,17 @@ public class Jogo extends JPanel {
     }
 
     public boolean colisao(int x, int y, int rotacao) throws Throwable {
+        //Color[][] parede =  new Color[20][32];
         for (Point p : tetraminoPeca[pecaAtual][rotacao]) {
 
             if (parede[p.x + x][p.y + y] != Color.PINK) {
 
-                System.out.println((p.x+x)+" "+(p.y+y));
-                if(p.y + y <= 3) {
-                    p = new Point();
-                   Tetris tetris = new Tetris();
-                   tetris.novoJogo();
-
-                }
-
                 return false;
-
 
             }
 
+
         }
-
-
 
         return true;
 
@@ -180,8 +171,21 @@ public class Jogo extends JPanel {
 
     public void correr() throws InterruptedException {
 
+
         new Thread(() -> {
+
             while (true) {
+                System.out.println(origemPeca.x+" "+(origemPeca.y-1));
+                if(origemPeca.y-1 == 0 && parede[origemPeca.x][origemPeca.y-1] == Color.PINK && parede[origemPeca.x][origemPeca.y+1] != Color.PINK){
+                    Jogo.this.removeAll();
+                    Tetris tetris = new Tetris();
+                    try {
+                        tetris.novoJogo();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                }
                 try {
                     baixar();
                     if (pontos >= 0 && pontos < 5000) {
@@ -221,7 +225,11 @@ public class Jogo extends JPanel {
 
             }
 
+
+
+
         }).start();
+
 
 
 
@@ -249,13 +257,13 @@ public class Jogo extends JPanel {
 
 
         if (colisao(origemPeca.x, origemPeca.y + 1, rotacao)) {
+
             origemPeca.y += variavel;
+            //System.out.println(origemPeca.y);
+
 
 
         } else {
-
-
-
 
             montar();
         }
@@ -300,7 +308,7 @@ public class Jogo extends JPanel {
             Collections.addAll(proximaPeca, VGlobal);//Escolhas
             Collections.shuffle(proximaPeca);// responsavel pela Aleatoriedade
         }
-        //sleep(1);
+        sleep(1);
         pecaAtual = proximaPeca.get(0);
         proximaPeca.remove(0);//Remove a peca atual
 
