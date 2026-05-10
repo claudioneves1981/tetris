@@ -4,6 +4,8 @@ import screen.Tetris;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -171,26 +173,13 @@ public class Jogo extends JPanel {
 
     public void correr() throws InterruptedException {
 
-
         new Thread(() -> {
-
             while (true) {
-                System.out.println(origemPeca.x+" "+(origemPeca.y-1));
-                if(origemPeca.y-1 == 0 && parede[origemPeca.x][origemPeca.y-1] == Color.PINK && parede[origemPeca.x][origemPeca.y+1] != Color.PINK){
-                    Jogo.this.removeAll();
-                    Tetris tetris = new Tetris();
-                    try {
-                        tetris.novoJogo();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    break;
-                }
                 try {
                     baixar();
                     if (pontos >= 0 && pontos < 5000) {
                         nivel = 1;
-                        sleep(1000);
+                        sleep(100);
                     }
                     if (pontos >= 5000 && pontos < 10000) {
                         nivel = 2;
@@ -216,6 +205,12 @@ public class Jogo extends JPanel {
                         nivel = 7;
                         sleep(150);
                     }
+                    if(origemPeca.y-1 == 0 && parede[origemPeca.x][origemPeca.y-1] == Color.PINK && parede[origemPeca.x][origemPeca.y+1] != Color.PINK){
+                        Thread.currentThread().interrupt();
+                        Tetris tetris = new Tetris();
+                        tetris.novoJogo();
+                        break;
+                   }
 
                 } catch (Exception e) {
                     e.getMessage();
@@ -227,13 +222,7 @@ public class Jogo extends JPanel {
 
 
 
-
-        }).start();
-
-
-
-
-
+       }).start();
 
     }
 
@@ -255,26 +244,16 @@ public class Jogo extends JPanel {
     //== Movimentos Das Pe�as direita esquerda e baixo assim como as colisoes com a parede==
     public void baixar() throws Throwable {
 
-
         if (colisao(origemPeca.x, origemPeca.y + 1, rotacao)) {
 
             origemPeca.y += variavel;
-            //System.out.println(origemPeca.y);
-
-
 
         } else {
 
             montar();
         }
 
-
-
-
-
-
         repaint();
-
 
     }
 

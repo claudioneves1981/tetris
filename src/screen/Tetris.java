@@ -44,8 +44,10 @@ public class Tetris {
     }
 
     private void startNewGame() throws InterruptedException {
+
+        //Thread.currentThread().interrupt();
         mainFrame.removeAll();
-        mainFrame.dispose();
+        //.dispose();
         Jogo jogo = new Jogo(dimension);
         mainFrame.revalidate();
         mainFrame.repaint();
@@ -112,7 +114,7 @@ public class Tetris {
         });
         jogo.correr();
         jogo.motor();
-        mainFrame.add(jogo);
+        mainFrame = new Tela(jogo);
 
     }
 
