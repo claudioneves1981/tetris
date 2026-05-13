@@ -89,8 +89,8 @@ public class Jogo extends JPanel {
     protected void paintComponent(Graphics g) {
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, 900, 700);
-        String[] palavrasmenu = {"PAUSE/PLAY(Press Enter)", "EXIT(Press ESC)"};
-        for (int i = 0; i < 2; i++) {
+        String[] palavrasmenu = {"PAUSE/PLAY(Press Enter)", "EXIT(Press ESC)","ROTATE(Press ↓ or ↑)","DROP(Press Espace)" ,"LEFT(Press ←)", "RIGHT(Press →)" };
+        for (int i = 0; i < palavrasmenu.length; i++) {
             g.setColor(Color.green);
             g.drawString(palavrasmenu[i], 448 + 40, 80 + 30 * i);
 
@@ -115,13 +115,14 @@ public class Jogo extends JPanel {
 
     public void tetraminoPecas(Graphics g){
 
-        g.setColor(tetraminoCor[pecaAtual]); //Cor Do Teris
+        g.setColor(tetraminoCor[pecaAtual]);
         for (Point p : tetraminoPeca[pecaAtual][rotacao]) {
             g.fillRect((p.x + origemPeca.x) * 21 + x, (p.y + origemPeca.y) * 21 + y, 20, 20);
         }
-        g.setColor(tetraminoCor[VGlobal]); //Cor Do Teris
+
+        g.setColor(tetraminoCor[VGlobal]);
         for (Point c : tetraminoPeca[VGlobal][0]) {
-            g.fillRect((c.x + 23) * 21, (c.y + 14) * 21, 20, 20);
+           g.fillRect((c.x + 23) * 21, (c.y + 14) * 21, 20, 20);
         }
 
         g.setColor(Color.red);
@@ -130,7 +131,7 @@ public class Jogo extends JPanel {
 
 
         g.setColor(Color.red);
-        g.drawRect(449, 233, 150, 150);
+        g.drawRect(450, 250, 150, 150);
     }
 
     public void motor() throws InterruptedException {
@@ -277,6 +278,7 @@ public class Jogo extends JPanel {
 
         Random r = new Random();
         VGlobal = r.nextInt(7);
+
 
         if (proximaPeca.isEmpty()) {
             Collections.addAll(proximaPeca, VGlobal);//Escolhas
