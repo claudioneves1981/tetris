@@ -45,85 +45,15 @@ public class Tetris {
 
     private void startNewGame() throws InterruptedException {
 
-        //Thread.currentThread().interrupt();
-        mainFrame.removeAll();
-        //.dispose();
-        Jogo jogo = new Jogo(dimension);
-        mainFrame.revalidate();
-        mainFrame.repaint();
-        mainFrame.addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_LEFT:
-                        try {
-                            jogo.esquerda();
-                        } catch (Throwable ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        try {
-                            jogo.direita();
-                        } catch (Throwable ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        break;
-                    case KeyEvent.VK_UP:
-                        try {
-                            jogo.rotacao(1);
-                        } catch (Throwable ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        try {
-                            jogo.rotacao(-1);
-                        } catch (Throwable ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        break;
-                    case KeyEvent.VK_SPACE:
-                        try {
-                            jogo.baixar();
-                        } catch (Throwable ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        break;
-                    case KeyEvent.VK_ENTER:
-                        jogo.pausePlay();
-                        break;
-                    case KeyEvent.VK_ESCAPE:
-                        System.exit(0);
-                        break;
-                }
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-
-        });
-        jogo.correr();
-        jogo.motor();
-        mainFrame = new Tela(jogo);
+        mainFrame.dispose();
+        buildMainScreen();
 
     }
 
     public void buildMainScreen() throws InterruptedException {
 
-
         Jogo jogo = new Jogo(dimension);
-        mainFrame.revalidate();
-        mainFrame.repaint();
+        mainFrame = new Tela(jogo);
         mainFrame.addKeyListener(new KeyListener() {
 
             @Override
@@ -187,7 +117,6 @@ public class Tetris {
         });
         jogo.correr();
         jogo.motor();
-        mainFrame = new Tela(jogo);
 
     }
 

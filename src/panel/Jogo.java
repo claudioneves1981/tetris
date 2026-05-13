@@ -137,7 +137,7 @@ public class Jogo extends JPanel {
         for (int i = 0; i < limiteParede; i++) {
             for (int j = 0; j < 32; j++) {
 
-                if (i == 0 || j == 31) {
+                if (i == 0 || j == 31 || j == 0) {
                     parede[i][j] = Color.orange;
 
 
@@ -179,7 +179,7 @@ public class Jogo extends JPanel {
                     baixar();
                     if (pontos >= 0 && pontos < 5000) {
                         nivel = 1;
-                        sleep(100);
+                        sleep(1000);
                     }
                     if (pontos >= 5000 && pontos < 10000) {
                         nivel = 2;
@@ -205,13 +205,12 @@ public class Jogo extends JPanel {
                         nivel = 7;
                         sleep(150);
                     }
-                    if(origemPeca.y-1 == 0 && parede[origemPeca.x][origemPeca.y-1] == Color.PINK && parede[origemPeca.x][origemPeca.y+1] != Color.PINK){
-                        Thread.currentThread().interrupt();
+                    if(origemPeca.y-1 == 0 && parede[origemPeca.x][origemPeca.y-1] == Color.orange && parede[origemPeca.x][origemPeca.y+1] != Color.PINK){
                         Tetris tetris = new Tetris();
                         tetris.novoJogo();
+                        Thread.currentThread().interrupt();
                         break;
                    }
-
                 } catch (Exception e) {
                     e.getMessage();
                 } catch (Throwable e) {
@@ -276,12 +275,8 @@ public class Jogo extends JPanel {
     public void novaPeca() throws InterruptedException {
         origemPeca = new Point(dim / 2 - 1, 1);
 
-
-
         Random r = new Random();
         VGlobal = r.nextInt(7);
-
-
 
         if (proximaPeca.isEmpty()) {
             Collections.addAll(proximaPeca, VGlobal);//Escolhas
