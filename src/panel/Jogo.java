@@ -4,6 +4,8 @@ import screen.Tetris;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -13,19 +15,17 @@ import static java.lang.Thread.sleep;
 public class Jogo extends JPanel {
 
     int variavel = 1;
+    boolean isAtive = true;
     int dim = 17;
     int limiteParede = dim - 1;
-    boolean isAtive = true;
     int N;
-    int VGlobal = 0;
-    int peca[] = new int[2];
-
+    int proximaPeca = 0;
     int nivel = 0;
     int pontos = 0;
     int y, x, rotacao = 0;
     Point origemPeca = new Point();
     Color[][] parede =  new Color[20][32];
-    ArrayList<Integer> proximaPeca = new ArrayList<>();
+    ArrayList<Integer> peca = new ArrayList<>();
     int pecaAtual;
     Color[] tetraminoCor = {
             new Color(0, 0, 153), new Color(204, 0, 204), new Color(0, 102, 102), new Color(255, 102, 0), Color.green, Color.cyan, Color.red
@@ -89,7 +89,7 @@ public class Jogo extends JPanel {
     protected void paintComponent(Graphics g) {
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, 900, 700);
-        String[] palavrasmenu = {"PAUSE/PLAY(Press Enter)", "EXIT(Press ESC)","ROTATE(Press ↓ or ↑)","DROP(Press Espace)" ,"LEFT(Press ←)", "RIGHT(Press →)" };
+        String[] palavrasmenu = {"variavel/PLAY(Press Enter)", "EXIT(Press ESC)","ROTATE(Press ↓ or ↑)","DROP(Press Espace)" ,"LEFT(Press ←)", "RIGHT(Press →)" };
         for (int i = 0; i < palavrasmenu.length; i++) {
             g.setColor(Color.green);
             g.drawString(palavrasmenu[i], 448 + 40, 80 + 30 * i);
@@ -120,8 +120,8 @@ public class Jogo extends JPanel {
             g.fillRect((p.x + origemPeca.x) * 21 + x, (p.y + origemPeca.y) * 21 + y, 20, 20);
         }
 
-        g.setColor(tetraminoCor[VGlobal]);
-        for (Point c : tetraminoPeca[VGlobal][0]) {
+        g.setColor(tetraminoCor[proximaPeca]);
+        for (Point c : tetraminoPeca[proximaPeca][0]) {
            g.fillRect((c.x + 23) * 21, (c.y + 14) * 21, 20, 20);
         }
 
@@ -246,7 +246,7 @@ public class Jogo extends JPanel {
 
         if (colisao(origemPeca.x, origemPeca.y + 1, rotacao)) {
 
-            origemPeca.y += variavel;
+            origemPeca.y+=variavel;
 
         } else {
 
@@ -259,7 +259,7 @@ public class Jogo extends JPanel {
 
     public void direita() throws Throwable {
         if (colisao(origemPeca.x + 1, origemPeca.y, rotacao)) {
-            origemPeca.x += variavel;
+            origemPeca.x++;
         }
         repaint();
     }
@@ -271,25 +271,21 @@ public class Jogo extends JPanel {
         }
         repaint();
     }
-
+    
     //====================================================================
     public void novaPeca() throws InterruptedException {
         origemPeca = new Point(dim / 2 - 1, 1);
-
         Random r = new Random();
-
-
+        
       for(int i = 0; i < 2; i++) {
-          VGlobal = r.nextInt(7);
-          //if (proximaPeca.isEmpty()) {
-              Collections.addAll(proximaPeca, VGlobal);//Escolhas
-              //Collections.shuffle(proximaPeca);// responsavel pela Aleatoriedade
-          //}
+          proximaPeca = r.nextInt(7);
+          Collections.addAll(peca, proximaPeca);
       }
+      
         sleep(1);
-        pecaAtual = proximaPeca.get(0);
-        VGlobal = proximaPeca.get(1);
-        proximaPeca.remove(0);//Remove a peca atual
+        pecaAtual = peca.get(0);
+        proximaPeca = peca.get(1);
+        peca.remove(0);//Remove a peca atual
 
     }
 
@@ -329,11 +325,14 @@ public class Jogo extends JPanel {
     }
 
     public void pausePlay() {
+
         isAtive = !isAtive;
-        if (isAtive) {
+        if (!isAtive) {
             variavel = 1;
         } else {
             variavel = 0;
         }
     }
 }
+
+
