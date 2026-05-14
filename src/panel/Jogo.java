@@ -4,8 +4,6 @@ import screen.Tetris;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -19,7 +17,9 @@ public class Jogo extends JPanel {
     int limiteParede = dim - 1;
     boolean isAtive = true;
     int N;
-    int VGlobal;
+    int VGlobal = 0;
+    int peca[] = new int[2];
+
     int nivel = 0;
     int pontos = 0;
     int y, x, rotacao = 0;
@@ -154,7 +154,7 @@ public class Jogo extends JPanel {
     }
 
     public boolean colisao(int x, int y, int rotacao) throws Throwable {
-        //Color[][] parede =  new Color[20][32];
+
         for (Point p : tetraminoPeca[pecaAtual][rotacao]) {
 
             if (parede[p.x + x][p.y + y] != Color.PINK) {
@@ -277,15 +277,18 @@ public class Jogo extends JPanel {
         origemPeca = new Point(dim / 2 - 1, 1);
 
         Random r = new Random();
-        VGlobal = r.nextInt(7);
 
 
-        if (proximaPeca.isEmpty()) {
-            Collections.addAll(proximaPeca, VGlobal);//Escolhas
-            Collections.shuffle(proximaPeca);// responsavel pela Aleatoriedade
-        }
+      for(int i = 0; i < 2; i++) {
+          VGlobal = r.nextInt(7);
+          //if (proximaPeca.isEmpty()) {
+              Collections.addAll(proximaPeca, VGlobal);//Escolhas
+              //Collections.shuffle(proximaPeca);// responsavel pela Aleatoriedade
+          //}
+      }
         sleep(1);
         pecaAtual = proximaPeca.get(0);
+        VGlobal = proximaPeca.get(1);
         proximaPeca.remove(0);//Remove a peca atual
 
     }
