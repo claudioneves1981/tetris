@@ -89,7 +89,7 @@ public class Jogo extends JPanel {
     protected void paintComponent(Graphics g) {
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, 900, 700);
-        String[] palavrasmenu = {"variavel/PLAY(Press Enter)", "EXIT(Press ESC)","ROTATE(Press ↓ or ↑)","DROP(Press Espace)" ,"LEFT(Press ←)", "RIGHT(Press →)" };
+        String[] palavrasmenu = {"PLAY/Pause(Press Enter)", "EXIT(Press ESC)","ROTATE(Press ↓ or ↑)","DROP(Press Espace)" ,"LEFT(Press ←)", "RIGHT(Press →)" };
         for (int i = 0; i < palavrasmenu.length; i++) {
             g.setColor(Color.green);
             g.drawString(palavrasmenu[i], 448 + 40, 80 + 30 * i);
